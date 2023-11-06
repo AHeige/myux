@@ -1,0 +1,9 @@
+body {
+  background-color: #202020;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: 95vh;
+}
