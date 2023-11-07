@@ -13,6 +13,7 @@ export const iconStyle: React.CSSProperties = {
   justifyContent: 'center',
   alignContent: 'center',
   flexWrap: 'wrap',
+  filter: 'grayscale(50%)',
 }
 
 export const chosenColors: React.CSSProperties = {
