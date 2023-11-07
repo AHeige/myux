@@ -1,0 +1,23 @@
+.colorCard {
+  position: relative;
+  padding: 1.5em;
+}
+
+/* .colorCard:hover {
+  opacity: 0.5;
+} */
+
+.colorCard:hover .deleteBtn {
+  display: block;
+  opacity: 1;
+  transition: all 1s ease-in-out;
+}
+
+.deleteBtn {
+  transition: all 1s ease-in-out;
+  position: absolute;
+  display: none;
+  opacity: 0;
+  bottom: 0;
+  right: 0;
+}
