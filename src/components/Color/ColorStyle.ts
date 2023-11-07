@@ -1,9 +1,11 @@
 export const addColor: React.CSSProperties = {
   display: 'flex',
-  gap: '1em',
+  // gap: '1em',
   alignContent: 'center',
   justifyContent: 'center',
   padding: '1em',
+  // background: 'transparent',
+  width: 'fit-content',
 }
 
 export const iconStyle: React.CSSProperties = {
@@ -23,6 +25,10 @@ export const chosenColors: React.CSSProperties = {
   marginTop: '10em',
 }
 
-export const chosenColorCard: React.CSSProperties = {
-  padding: '2em',
+export const nav: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignContent: 'center',
+  background: 'transparent',
+  flexDirection: 'row',
 }
