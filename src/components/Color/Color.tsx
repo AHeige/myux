@@ -67,6 +67,7 @@ const Color = () => {
                   <img width={'25px'} src={colorIcon}></img>
                 </div>
                 <TextField
+                  variant='filled'
                   InputLabelProps={{
                     style: {
                       color: 'rgb(130,130,130)',
