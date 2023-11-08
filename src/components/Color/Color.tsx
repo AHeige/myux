@@ -3,22 +3,23 @@ import { useState } from 'react'
 import { AppBar, Button, Card, Chip, InputBaseComponentProps, Stack, TextField, ThemeProvider, Typography } from '@mui/material'
 
 //Icons
-import colorIcon from '../../../public/colorIcon.svg'
+import colorIcon from '../../assets/colorIcon.svg'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 //Styles
 import { addColor, chosenColors, iconStyle, nav, theme } from './ColorStyle'
 import './ColorCss.css'
+import { ColorInfo, getColorInfo, isValidColor } from '../../utils/helpers'
 
 const Color = () => {
-  const [colors, setColors] = useState<string[]>([])
+  const [colors, setColors] = useState<ColorInfo[]>([])
   const [newColor, setNewColor] = useState<string>('')
 
   useEffect(() => {
     const localStore = localStorage.getItem('colors')
 
     if (localStore) {
-      const storedColors: string[] = JSON.parse(localStore)
+      const storedColors: ColorInfo[] = JSON.parse(localStore)
 
       if (storedColors) {
         setColors(storedColors)
@@ -31,17 +32,13 @@ const Color = () => {
     handleAddColor()
   }
 
-  function isValidColor(strColor: string) {
-    const s = new Option().style
-    s.color = strColor
-    return s.color
-  }
-
   const handleAddColor = () => {
     if (colors && newColor.length > 0) {
       if (isValidColor(newColor)) {
-        newColor && setColors([...colors, newColor])
-        localStorage.setItem('colors', JSON.stringify([...colors, newColor]))
+        const newColorObject = getColorInfo(newColor)
+
+        newColor && setColors([...colors, newColorObject])
+        localStorage.setItem('colors', JSON.stringify([...colors, newColorObject]))
         setNewColor('')
       }
     }
@@ -94,7 +91,12 @@ const Color = () => {
           ? colors.map((color, i) => {
               const chosenColorCard: React.CSSProperties = {
                 padding: '3em',
-                background: color,
+                background: color.hex,
+              }
+
+              const chipStyle: React.CSSProperties = {
+                background: '#ebebeb',
+                color: '#414141',
               }
 
               return (
@@ -105,8 +107,14 @@ const Color = () => {
                     </Button>
                   </ThemeProvider>
                   <Stack direction={'column'} spacing={0.5}>
-                    <Chip avatar={<span style={{ background: color, borderRadius: '50%' }}></span>} label={color} />
-                    <Card elevation={10} style={chosenColorCard} key={i}></Card>
+                    {/* <Chip avatar={<span style={{ background: color.hex, borderRadius: '50%' }}></span>} label={color.hex} /> */}
+                    <Card elevation={10} style={chosenColorCard} key={i}>
+                      <Stack spacing={0.5}>
+                        {color.name && <Chip style={chipStyle} label={color.name} />}
+                        <Chip style={chipStyle} label={color.hex} />
+                        <Chip style={chipStyle} label={color.rgb} />
+                      </Stack>
+                    </Card>
                   </Stack>
                 </Card>
               )
