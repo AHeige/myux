@@ -6,6 +6,9 @@ import { colorMap, namedColors } from './constants'
 
 export function isValidColor(colorString: string) {
   // Check if it's a named color
+  if (typeof colorString !== 'string') {
+    return
+  }
 
   if (namedColors.includes(colorString.toLowerCase())) {
     return true

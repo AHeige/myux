@@ -58,12 +58,14 @@ const Color: FC<Props> = (props): JSX.Element => {
 
   const handleAddColor = () => {
     if (colors && newColor.length > 0) {
-      if (isValidColor(newColor)) {
-        const newColorObject: SavedColor = createColorObject(newColor)
+      if (typeof newColor === 'string') {
+        if (isValidColor(newColor)) {
+          const newColorObject: SavedColor = createColorObject(newColor)
 
-        newColor && setColors([...colors, newColorObject])
-        localStorage.setItem('colors', JSON.stringify([...colors, newColorObject]))
-        setNewColor('')
+          newColor && setColors([...colors, newColorObject])
+          localStorage.setItem('colors', JSON.stringify([...colors, newColorObject]))
+          setNewColor('')
+        }
       }
     }
   }
