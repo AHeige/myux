@@ -28,14 +28,6 @@ export const chosenColors: React.CSSProperties = {
   marginTop: '10em',
 }
 
-export const nav: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignContent: 'center',
-  background: '#414141',
-  flexDirection: 'row',
-}
-
 export const theme = createTheme({
   components: {
     MuiButton: {

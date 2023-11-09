@@ -1,13 +1,13 @@
 import React, { FC, FormEvent, useEffect } from 'react'
 import { useState } from 'react'
-import { AppBar, Button, Card, Chip, InputBaseComponentProps, Stack, TextField, ThemeProvider, Typography } from '@mui/material'
+import { Button, Card, Chip, InputBaseComponentProps, Stack, TextField, ThemeProvider, Typography } from '@mui/material'
 
 //Icons
 import colorIcon from '../../assets/colorIcon.svg'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 //Styles
-import { addColor, chosenColors, iconStyle, nav, theme } from './ColorStyle'
+import { addColor, chosenColors, iconStyle, theme } from './ColorStyle'
 import './ColorCss.css'
 
 //Utils
@@ -15,6 +15,7 @@ import { createColorObject, isValidColor } from '../../utils/helpers'
 
 //Interfaces
 import { SavedColor } from '../../interfaces/ColorInterfaces'
+import Header from '../Header/Header'
 
 interface Props {
   inputLabel?: string
@@ -67,38 +68,39 @@ const Color: FC<Props> = (props): JSX.Element => {
     },
   }
 
-  console.log(inputLabel)
-
   return (
     <>
-      <AppBar elevation={0} style={nav}>
-        <Stack direction={'row'} spacing={3}>
-          <Card style={addColor} elevation={0}>
-            <form onSubmit={(e) => handleSubmit(e)}>
-              <Stack direction={'row'} spacing={2}>
-                <div style={iconStyle}>
-                  <img width={'25px'} src={colorIcon}></img>
-                </div>
-                <TextField
-                  InputLabelProps={{
-                    style: {
-                      color: 'rgb(130,130,130)',
-                    },
-                  }}
-                  inputProps={inputProp}
-                  style={{ color: '#fff' }}
-                  value={newColor}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewColor(event.target.value)}
-                  label={inputLabel}
-                />
-                <Button disabled={!isValidColor(newColor)} color={'success'} variant='contained' onClick={() => handleAddColor()}>
-                  Add Color
-                </Button>
-              </Stack>
-            </form>
-          </Card>
-        </Stack>
-      </AppBar>
+      <Header
+        children={
+          <Stack direction={'row'} spacing={3}>
+            <Card style={addColor} elevation={0}>
+              <form onSubmit={(e) => handleSubmit(e)}>
+                <Stack direction={'row'} spacing={2}>
+                  <div style={iconStyle}>
+                    <img width={'25px'} src={colorIcon}></img>
+                  </div>
+                  <TextField
+                    InputLabelProps={{
+                      style: {
+                        color: 'rgb(130,130,130)',
+                      },
+                    }}
+                    inputProps={inputProp}
+                    style={{ color: '#fff' }}
+                    value={newColor}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewColor(event.target.value)}
+                    label={inputLabel}
+                  />
+                  <Button disabled={!isValidColor(newColor)} color={'success'} variant='contained' onClick={() => handleAddColor()}>
+                    Add Color
+                  </Button>
+                </Stack>
+              </form>
+            </Card>
+          </Stack>
+        }
+      />
+
       <div style={chosenColors}>
         {colors.length > 0
           ? colors.map((color, i) => {
