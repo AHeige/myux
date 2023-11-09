@@ -42,7 +42,7 @@ const Color: FC<Props> = (props): JSX.Element => {
         })
 
         setColors(migratedColors)
-        // localStorage.setItem('colors', JSON.stringify([...colors]))
+        localStorage.setItem('colors', JSON.stringify(migratedColors))
       } else if (data.length > 0) {
         const storedColors: SavedColor[] = data
 
