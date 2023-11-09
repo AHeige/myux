@@ -31,9 +31,21 @@ const Color: FC<Props> = (props): JSX.Element => {
     const localStore = localStorage.getItem('colors')
 
     if (localStore) {
-      const storedColors: SavedColor[] = JSON.parse(localStore)
+      const data = JSON.parse(localStore)
 
-      if (storedColors) {
+      //If old data is stored as string[] -- before SavedColor[] was implemented.
+      if (data.length > 0 && !data[0].colorDetails) {
+        const oldData: string[] = data
+
+        const migratedColors: SavedColor[] = oldData.map((color) => {
+          return createColorObject(color)
+        })
+
+        setColors(migratedColors)
+        // localStorage.setItem('colors', JSON.stringify([...colors]))
+      } else if (data.length > 0) {
+        const storedColors: SavedColor[] = data
+
         setColors(storedColors)
       }
     }
