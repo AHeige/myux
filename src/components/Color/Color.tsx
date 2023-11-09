@@ -35,14 +35,9 @@ const Color: FC<Props> = (props): JSX.Element => {
 
       //If old data is stored as string[] -- before SavedColor[] was implemented.
       if (data.length > 0 && !data[0].colorDetails) {
-        const oldData: string[] = data
+        localStorage.clear()
 
-        const migratedColors: SavedColor[] = oldData.map((color) => {
-          return createColorObject(color)
-        })
-
-        setColors(migratedColors)
-        localStorage.setItem('colors', JSON.stringify(migratedColors))
+        // setColors(migratedColors)
       } else if (data.length > 0) {
         const storedColors: SavedColor[] = data
 
