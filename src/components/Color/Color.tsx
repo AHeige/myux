@@ -37,8 +37,12 @@ const Color: FC<Props> = (props): JSX.Element => {
       if (data.length > 0 && !data[0].colorDetails) {
         const oldData: string[] = data
 
-        const migratedColors: SavedColor[] = oldData.map((color) => {
-          return createColorObject(color)
+        const migratedColors: SavedColor[] = []
+
+        oldData.map((color) => {
+          if (typeof color === 'string') {
+            migratedColors.push(createColorObject(color))
+          }
         })
 
         setColors(migratedColors)
