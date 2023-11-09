@@ -1,0 +1,15 @@
+export interface SavedColor {
+  colorDetails: ColorDetails
+  created: Date
+  category: Category[]
+}
+
+interface Category {
+  name: string
+}
+
+export interface ColorDetails {
+  name: string
+  hex: string
+  rgb: string
+}

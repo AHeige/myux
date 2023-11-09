@@ -1,11 +1,14 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
-import Color from './components/Color/Color'
+import Find from './pages/Find'
 
 function App() {
   return (
-    <>
-      <Color />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Find />}></Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

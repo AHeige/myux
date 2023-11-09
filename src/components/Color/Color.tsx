@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect } from 'react'
+import React, { FC, FormEvent, useEffect } from 'react'
 import { useState } from 'react'
 import { AppBar, Button, Card, Chip, InputBaseComponentProps, Stack, TextField, ThemeProvider, Typography } from '@mui/material'
 
@@ -9,17 +9,28 @@ import DeleteIcon from '@mui/icons-material/Delete'
 //Styles
 import { addColor, chosenColors, iconStyle, nav, theme } from './ColorStyle'
 import './ColorCss.css'
-import { ColorInfo, getColorInfo, isValidColor } from '../../utils/helpers'
 
-const Color = () => {
-  const [colors, setColors] = useState<ColorInfo[]>([])
+//Utils
+import { createColorObject, isValidColor } from '../../utils/helpers'
+
+//Interfaces
+import { SavedColor } from '../../interfaces/ColorInterfaces'
+
+interface Props {
+  inputLabel?: string
+}
+
+const Color: FC<Props> = (props): JSX.Element => {
+  const { inputLabel = '#color' } = props
+
+  const [colors, setColors] = useState<SavedColor[]>([])
   const [newColor, setNewColor] = useState<string>('')
 
   useEffect(() => {
     const localStore = localStorage.getItem('colors')
 
     if (localStore) {
-      const storedColors: ColorInfo[] = JSON.parse(localStore)
+      const storedColors: SavedColor[] = JSON.parse(localStore)
 
       if (storedColors) {
         setColors(storedColors)
@@ -35,7 +46,7 @@ const Color = () => {
   const handleAddColor = () => {
     if (colors && newColor.length > 0) {
       if (isValidColor(newColor)) {
-        const newColorObject = getColorInfo(newColor)
+        const newColorObject: SavedColor = createColorObject(newColor)
 
         newColor && setColors([...colors, newColorObject])
         localStorage.setItem('colors', JSON.stringify([...colors, newColorObject]))
@@ -55,6 +66,8 @@ const Color = () => {
       color: isValidColor(newColor) ? '#fff' : 'rgb(130,130,130)',
     },
   }
+
+  console.log(inputLabel)
 
   return (
     <>
@@ -76,7 +89,7 @@ const Color = () => {
                   style={{ color: '#fff' }}
                   value={newColor}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewColor(event.target.value)}
-                  label='#color'
+                  label={inputLabel}
                 />
                 <Button disabled={!isValidColor(newColor)} color={'success'} variant='contained' onClick={() => handleAddColor()}>
                   Add Color
@@ -91,7 +104,7 @@ const Color = () => {
           ? colors.map((color, i) => {
               const chosenColorCard: React.CSSProperties = {
                 padding: '3em',
-                background: color.hex,
+                background: color.colorDetails.hex,
               }
 
               const chipStyle: React.CSSProperties = {
@@ -106,15 +119,19 @@ const Color = () => {
                       <DeleteIcon />
                     </Button>
                   </ThemeProvider>
-                  <Stack direction={'column'} spacing={0.5}>
+                  <Stack direction={'column'} spacing={1}>
                     {/* <Chip avatar={<span style={{ background: color.hex, borderRadius: '50%' }}></span>} label={color.hex} /> */}
-                    <Card elevation={10} style={chosenColorCard} key={i}>
-                      <Stack spacing={0.5}>
-                        {color.name && <Chip style={chipStyle} label={color.name} />}
-                        <Chip style={chipStyle} label={color.hex} />
-                        <Chip style={chipStyle} label={color.rgb} />
-                      </Stack>
-                    </Card>
+                    <Stack direction={'row'} spacing={0.5}>
+                      {color.colorDetails.name && <Chip style={chipStyle} label={color.colorDetails.name} />}
+                      <Chip style={chipStyle} label={color.colorDetails.hex} />
+                      <Chip style={chipStyle} label={color.colorDetails.rgb} />
+                    </Stack>
+                    <Card elevation={10} style={chosenColorCard} key={i}></Card>
+                    <Stack direction={'row'}>
+                      {color.category.map((d) => {
+                        return <Chip style={chipStyle} label={d.name} />
+                      })}
+                    </Stack>
                   </Stack>
                 </Card>
               )
