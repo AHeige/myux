@@ -29,9 +29,6 @@ export function isValidColor(colorString: string) {
 
 //Returning a object with name, hex and rgb
 export function getColorInfo(colorString: string): ColorDetails {
-  // Remove leading and trailing spaces
-  colorString = colorString.trim()
-
   // Check if the color string exists in the map
   if (Object.prototype.hasOwnProperty.call(colorMap, colorString.toLowerCase())) {
     const colorInfo = colorMap[colorString.toLowerCase()]
