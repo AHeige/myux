@@ -1,5 +1,6 @@
 import React, { FormEvent } from 'react'
 import { useState } from 'react'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import { Button, Card, Chip, InputBaseComponentProps, Stack, TextField, ThemeProvider, Typography } from '@mui/material'
 
 //Icons
@@ -28,6 +29,7 @@ const Color: React.FC<Props> = (props): JSX.Element => {
   const { inputLabel = '#color', onColorSelect, colors, deleteColor } = props
 
   const [newColor, setNewColor] = useState<string>('')
+  const minWidth600 = useMediaQuery('(min-width:600px)')
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
@@ -63,9 +65,11 @@ const Color: React.FC<Props> = (props): JSX.Element => {
           <Card style={addColor} elevation={0}>
             <form onSubmit={(e) => handleSubmit(e)}>
               <Stack direction={'row'} spacing={2}>
-                <div style={iconStyle}>
-                  <img width={'25px'} src={colorIcon}></img>
-                </div>
+                {minWidth600 && (
+                  <div style={iconStyle}>
+                    <img width={'25px'} src={colorIcon}></img>
+                  </div>
+                )}
                 <TextField
                   InputLabelProps={{
                     style: {

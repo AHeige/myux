@@ -3,9 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 //Styles
 import './App.css'
 
-//Components
-import DrawerSimple from './components/Drawer/DrawerSimple'
-
 //Pages
 import Find from './pages/Find'
 import Design from './pages/Design'
@@ -61,7 +58,6 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <DrawerSimple />
       <Routes>
         <Route path={'/'} element={<Find colors={colors} onColorSelect={(newColor: SavedColor) => handleAddColor(newColor)} handleDeleteColor={(i) => handleDeleteColor(i)} />}></Route>
         <Route path={'/design'} element={<Design colors={colors} />}></Route>
