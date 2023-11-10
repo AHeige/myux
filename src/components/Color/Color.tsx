@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect } from 'react'
+import React, { FormEvent } from 'react'
 import { useState } from 'react'
 import { Button, Card, Chip, InputBaseComponentProps, Stack, TextField, ThemeProvider, Typography } from '@mui/material'
 
@@ -19,41 +19,15 @@ import Header from '../Header/Header'
 
 interface Props {
   inputLabel?: string
+  onColorSelect: (newColor: SavedColor) => void
+  colors: SavedColor[]
+  deleteColor: (i: number) => void
 }
 
 const Color: React.FC<Props> = (props): JSX.Element => {
-  const { inputLabel = '#color' } = props
+  const { inputLabel = '#color', onColorSelect, colors, deleteColor } = props
 
-  const [colors, setColors] = useState<SavedColor[]>([])
   const [newColor, setNewColor] = useState<string>('')
-
-  useEffect(() => {
-    const localStore = localStorage.getItem('colors')
-
-    if (localStore) {
-      const data = JSON.parse(localStore)
-
-      //If old data is stored as string[] -- before SavedColor[] was implemented.
-      if (data.length > 0 && !data[0].colorDetails) {
-        const oldData: string[] = data
-
-        const migratedColors: SavedColor[] = []
-
-        oldData.map((color) => {
-          if (typeof color === 'string') {
-            migratedColors.push(createColorObject(color))
-          }
-        })
-
-        setColors(migratedColors)
-        localStorage.setItem('colors', JSON.stringify(migratedColors))
-      } else if (data.length > 0) {
-        const storedColors: SavedColor[] = data
-
-        setColors(storedColors)
-      }
-    }
-  }, [])
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
@@ -66,18 +40,14 @@ const Color: React.FC<Props> = (props): JSX.Element => {
         if (isValidColor(newColor)) {
           const newColorObject: SavedColor = createColorObject(newColor)
 
-          newColor && setColors([...colors, newColorObject])
-          localStorage.setItem('colors', JSON.stringify([...colors, newColorObject]))
-          setNewColor('')
+          if (newColorObject) {
+            onColorSelect(newColorObject)
+
+            setNewColor('')
+          }
         }
       }
     }
-  }
-
-  const deleteColor = (i: number) => {
-    colors.splice(i, 1)
-    setColors(colors.map((c) => c))
-    localStorage.setItem('colors', JSON.stringify(colors.map((c) => c)))
   }
 
   const inputProp: InputBaseComponentProps = {

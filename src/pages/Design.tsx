@@ -1,6 +1,11 @@
 import React from 'react'
 import Header from '../components/Header/Header'
 import { Card } from '@mui/material'
+import { SavedColor } from '../interfaces/ColorInterfaces'
+
+interface Props {
+  colors: SavedColor[]
+}
 
 const DesignHeader: React.FC = () => (
   <>
@@ -8,7 +13,9 @@ const DesignHeader: React.FC = () => (
   </>
 )
 
-const Design: React.FC = (): JSX.Element => {
+const Design: React.FC<Props> = ({ colors }): JSX.Element => {
+  console.log(colors)
+
   return (
     <div style={{ width: '50vw', height: '50vh' }}>
       <Header>
