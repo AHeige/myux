@@ -4,8 +4,9 @@ import { Button, Drawer, Stack } from '@mui/material'
 import BorderStyleIcon from '@mui/icons-material/BorderStyle'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { useNavigate } from 'react-router-dom'
+import React from 'react'
 
-const DrawerSimple = () => {
+const DrawerSimple: React.FC = () => {
   const navigate = useNavigate()
 
   return (

@@ -4,7 +4,7 @@ import Find from './pages/Find'
 import DrawerSimple from './components/Drawer/DrawerSimple'
 import Design from './pages/Design'
 
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <DrawerSimple />

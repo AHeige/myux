@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import React from 'react'
 import Color from '../components/Color/Color'
 
-const Find: FC = (): JSX.Element => {
+const Find: React.FC = (): JSX.Element => {
   return <Color />
 }
 
