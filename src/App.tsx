@@ -16,13 +16,11 @@ const App: React.FC = () => {
   const [colors, setColors] = useState<SavedColor[]>([])
 
   const handleAddColor = (newColor: SavedColor) => {
-    console.log(newColor)
     setColors([...colors, newColor])
     localStorage.setItem('colors', JSON.stringify([...colors, newColor]))
   }
 
   const handleDeleteColor = (i: number) => {
-    console.log('deleted: ', colors[i])
     colors.splice(i, 1)
     setColors([...colors])
     localStorage.setItem('colors', JSON.stringify(colors))
@@ -60,7 +58,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path={'/'} element={<Find colors={colors} onColorSelect={(newColor: SavedColor) => handleAddColor(newColor)} handleDeleteColor={(i) => handleDeleteColor(i)} />}></Route>
-        <Route path={'/design'} element={<Design colors={colors} />}></Route>
+        <Route path={'/design'} element={<Design colors={colors} onColorSelect={(newColor: SavedColor) => handleAddColor(newColor)} />}></Route>
       </Routes>
     </BrowserRouter>
   )

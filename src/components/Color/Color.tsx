@@ -1,22 +1,17 @@
-import React, { FormEvent } from 'react'
-import { useState } from 'react'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { Button, Card, Chip, InputBaseComponentProps, Stack, TextField, ThemeProvider, Typography } from '@mui/material'
+import React, { useState } from 'react'
 
-//Icons
-import colorIcon from '../../assets/colorIcon.svg'
+import { Button, Card, Chip, Stack, ThemeProvider, Typography } from '@mui/material'
+
 import DeleteIcon from '@mui/icons-material/Delete'
 
 //Styles
-import { addColor, chosenColors, iconStyle, theme } from './ColorStyle'
+import { chosenColors, theme } from './ColorStyle'
 import './ColorCss.css'
-
-//Utils
-import { createColorObject, isValidColor } from '../../utils/helpers'
 
 //Interfaces
 import { SavedColor } from '../../interfaces/ColorInterfaces'
 import Header from '../Header/Header'
+import AddColor from './AddColor'
 
 interface Props {
   inputLabel?: string
@@ -27,68 +22,17 @@ interface Props {
 
 const Color: React.FC<Props> = (props): JSX.Element => {
   const { inputLabel = '#color', onColorSelect, colors, deleteColor } = props
+  const [newColor, setNewColor] = useState<SavedColor>()
 
-  const [newColor, setNewColor] = useState<string>('')
-  const minWidth600 = useMediaQuery('(min-width:600px)')
-
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault()
-    handleAddColor()
-  }
-
-  const handleAddColor = () => {
-    if (colors && newColor.length > 0) {
-      if (typeof newColor === 'string') {
-        if (isValidColor(newColor)) {
-          const newColorObject: SavedColor = createColorObject(newColor)
-
-          if (newColorObject) {
-            onColorSelect(newColorObject)
-
-            setNewColor('')
-          }
-        }
-      }
-    }
-  }
-
-  const inputProp: InputBaseComponentProps = {
-    style: {
-      color: isValidColor(newColor) ? '#fff' : 'rgb(130,130,130)',
-    },
+  const handleSelectedColor = (color: SavedColor) => {
+    setNewColor(color)
+    onColorSelect(color)
   }
 
   return (
     <>
       <Header>
-        <Stack direction={'row'} spacing={3}>
-          <Card style={addColor} elevation={0}>
-            <form onSubmit={(e) => handleSubmit(e)}>
-              <Stack direction={'row'} spacing={2}>
-                {minWidth600 && (
-                  <div style={iconStyle}>
-                    <img width={'25px'} src={colorIcon}></img>
-                  </div>
-                )}
-                <TextField
-                  InputLabelProps={{
-                    style: {
-                      color: 'rgb(130,130,130)',
-                    },
-                  }}
-                  inputProps={inputProp}
-                  style={{ color: '#fff' }}
-                  value={newColor}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewColor(event.target.value)}
-                  label={inputLabel}
-                />
-                <Button disabled={!isValidColor(newColor)} color={'success'} variant='contained' onClick={() => handleAddColor()}>
-                  Add Color
-                </Button>
-              </Stack>
-            </form>
-          </Card>
-        </Stack>
+        <AddColor inputLabel={inputLabel} onColorSelect={(c) => handleSelectedColor(c)} />
       </Header>
 
       <div style={chosenColors}>
@@ -128,7 +72,7 @@ const Color: React.FC<Props> = (props): JSX.Element => {
                 </Card>
               )
             })
-          : [isValidColor(newColor) ? 'Its happening!' : 'No colors created yet :('].map((text, i) => (
+          : [!newColor && 'No colors created yet :('].map((text, i) => (
               <Typography key={i} style={{ color: 'rgb(130,130,130)' }} variant='h4'>
                 {text}
               </Typography>

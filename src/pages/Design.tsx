@@ -18,9 +18,11 @@ import { useDrag, useDrop } from 'react-dnd'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { useColorContext } from '../components/Design/ColorContext'
+import AddColor from '../components/Color/AddColor'
 
 interface Props {
   colors: SavedColor[]
+  onColorSelect: (newColor: SavedColor) => void
 }
 
 interface ColorDraggableProps {
@@ -33,8 +35,6 @@ interface DropTargetProps {
   callbackColor?: (color: string) => void
   background?: string
 }
-
-const DesignHeader: React.FC = () => <h2>Design</h2>
 
 const ColorDraggable: React.FC<ColorDraggableProps> = ({ color }) => {
   const [, drag] = useDrag(() => ({
@@ -59,7 +59,11 @@ const ColorDraggable: React.FC<ColorDraggableProps> = ({ color }) => {
   )
 }
 
-const DrawerComponent: React.FC<Props> = ({ colors }) => {
+interface DrawerComponentProps {
+  colors: SavedColor[]
+}
+
+const DrawerComponent: React.FC<DrawerComponentProps> = ({ colors }) => {
   return (
     <Stack spacing={2} direction={'column'} sx={{ padding: '2em', color: 'var(--main-font-color)', marginTop: '1em' }}>
       <p>Your colors:</p>
@@ -113,7 +117,7 @@ const navBar = () => {
   )
 }
 
-const Design: React.FC<Props> = ({ colors }): JSX.Element => {
+const Design: React.FC<Props> = ({ colors, onColorSelect }): JSX.Element => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(true)
 
   const toggleDrawer = () => {
@@ -123,7 +127,7 @@ const Design: React.FC<Props> = ({ colors }): JSX.Element => {
   return (
     <div>
       <Header>
-        <DesignHeader />
+        <AddColor onColorSelect={(c) => onColorSelect(c)} />
       </Header>
 
       <DndProvider backend={HTML5Backend}>
@@ -136,14 +140,24 @@ const Design: React.FC<Props> = ({ colors }): JSX.Element => {
               <div style={{ position: 'absolute' }}>
                 <DropTarget type='Nav' child={navBar()} />
               </div>
+
               {/* Background */}
-              <DropTarget type='background' child={<Card sx={{ borderRadius: '0.5em', background: 'transparent', padding: '25em' }}>Background</Card>} />
+              <DropTarget
+                type='background'
+                child={
+                  <Card elevation={5} sx={{ borderRadius: '0.5em', background: 'transparent', padding: '25em' }}>
+                    Background
+                  </Card>
+                }
+              />
+
+              {/* Card */}
               <div style={{ position: 'absolute', width: '45%', alignSelf: 'center', justifySelf: 'center' }}>
                 <DropTarget
                   background='color-mix(in srgb, var(--main-accent-color) 90%, white)'
                   type='card'
                   child={
-                    <Card sx={{ borderRadius: '0.5em', background: 'transparent', padding: '2em' }}>
+                    <Card elevation={5} sx={{ borderRadius: '0.5em', background: 'transparent', padding: '2em' }}>
                       <h2>Card</h2>
                       <p>With some fancy text!</p>
                     </Card>
