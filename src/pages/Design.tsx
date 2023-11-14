@@ -8,7 +8,7 @@ import Header from '../components/Header/Header'
 import DrawerSimple from '../components/Drawer/DrawerSimple'
 
 //Mui
-import { Card, Chip, Stack } from '@mui/material'
+import { AppBar, Card, Chip, Stack } from '@mui/material'
 import { Circle } from '@mui/icons-material'
 
 //Context
@@ -31,13 +31,10 @@ interface DropTargetProps {
   type: string
   child: ReactElement
   callbackColor?: (color: string) => void
+  background?: string
 }
 
-const DesignHeader: React.FC = () => (
-  <>
-    <h1>Design</h1>
-  </>
-)
+const DesignHeader: React.FC = () => <h2>Design</h2>
 
 const ColorDraggable: React.FC<ColorDraggableProps> = ({ color }) => {
   const [, drag] = useDrag(() => ({
@@ -74,8 +71,8 @@ const DrawerComponent: React.FC<Props> = ({ colors }) => {
   )
 }
 
-const DropTarget: React.FC<DropTargetProps> = ({ type, child, callbackColor }) => {
-  const [chosenColor, setChosenColor] = useState<string>('var(--main-accent-color)')
+const DropTarget: React.FC<DropTargetProps> = ({ type, child, callbackColor, background = 'var(--main-accent-color)' }) => {
+  const [chosenColor, setChosenColor] = useState<string>(background)
 
   const { colors, setColors } = useColorContext()
 
@@ -102,17 +99,26 @@ const DropTarget: React.FC<DropTargetProps> = ({ type, child, callbackColor }) =
   return <StyledWrapper />
 }
 
+const navBar = () => {
+  const padding = '2em'
+
+  return (
+    <AppBar position='relative'>
+      <Stack direction={'row'} style={{ width: '100%', display: 'flex', flexWrap: 'wrap' }}>
+        {['Home', 'Profile', 'Settings', 'About'].map((c) => {
+          return <Chip sx={{ padding: padding, background: 'transparent', color: '#fff' }} label={c} />
+        })}
+      </Stack>
+    </AppBar>
+  )
+}
+
 const Design: React.FC<Props> = ({ colors }): JSX.Element => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(true)
-  // const [background, setBackground] = useState<string>('var(--main-bg-color)')
 
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer)
   }
-
-  // const changeBackground = (color: string) => {
-  //   document.body.style.setProperty('--main-bg-color', color)
-  // }
 
   return (
     <div>
@@ -124,9 +130,26 @@ const Design: React.FC<Props> = ({ colors }): JSX.Element => {
         <ColorProvider>
           <>
             <DrawerSimple variant='persistent' mainDrawer={false} open={openDrawer} children={<DrawerComponent colors={colors} />} toggleDrawer={toggleDrawer} />
-            <div style={{ marginTop: '10em', justifyContent: 'flex-start', display: 'flex' }}>
-              <DropTarget type='red' child={<Card sx={{ borderRadius: '0.5em', background: 'transparent', padding: '10em' }}>Red</Card>} />
-              <DropTarget type='chip' child={<Chip sx={{ padding: '1em', background: 'transparent' }} label='testC' />} />
+            {/* Design card with drop targets */}
+            <div style={{ display: 'grid', marginTop: '10em', justifyContent: 'flex-start', flexDirection: 'row', position: 'relative' }}>
+              {/* Nav */}
+              <div style={{ position: 'absolute' }}>
+                <DropTarget type='Nav' child={navBar()} />
+              </div>
+              {/* Background */}
+              <DropTarget type='background' child={<Card sx={{ borderRadius: '0.5em', background: 'transparent', padding: '25em' }}>Background</Card>} />
+              <div style={{ position: 'absolute', width: '45%', alignSelf: 'center', justifySelf: 'center' }}>
+                <DropTarget
+                  background='color-mix(in srgb, var(--main-accent-color) 90%, white)'
+                  type='card'
+                  child={
+                    <Card sx={{ borderRadius: '0.5em', background: 'transparent', padding: '2em' }}>
+                      <h2>Card</h2>
+                      <p>With some fancy text!</p>
+                    </Card>
+                  }
+                />
+              </div>
             </div>
           </>
         </ColorProvider>

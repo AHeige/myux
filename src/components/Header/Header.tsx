@@ -44,7 +44,7 @@ const Header: React.FC<Props> = ({ children }): JSX.Element => {
       <DrawerSimple variant='temporary' mainDrawer open={openDrawer} toggleDrawer={toggleDrawer} children={<DrawerComponent />} />
       <AppBar elevation={0} style={nav}>
         <Grid container spacing={0} direction={'row'} wrap='wrap'>
-          <Grid container justifyContent={'flex-start'} width={'8%'}>
+          <Grid container justifyContent={'flex-start'} width={'0%'}>
             <Button onClick={() => setOpenDrawer(true)}>
               <MenuIcon sx={{ color: '#fff' }} />
             </Button>
