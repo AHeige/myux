@@ -1,4 +1,4 @@
 export const nav: React.CSSProperties = {
-  background: '#414141',
+  background: 'var(--main-accent-color)',
   minHeight: '88px',
 }

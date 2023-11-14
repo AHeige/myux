@@ -1,35 +1,32 @@
 import { Button, Drawer, Stack } from '@mui/material'
 
 //Icons
-import BorderStyleIcon from '@mui/icons-material/BorderStyle'
-import { ChevronLeft, ColorLens } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
-import React from 'react'
+
+import React, { ReactElement } from 'react'
+import { ChevronLeft } from '@mui/icons-material'
 
 interface Props {
   open: boolean
   toggleDrawer: () => void
+  children: ReactElement
+  mainDrawer: boolean
+  variant: 'permanent' | 'persistent' | 'temporary'
 }
 
-const DrawerSimple: React.FC<Props> = ({ open, toggleDrawer }) => {
-  const navigate = useNavigate()
-
+const DrawerSimple: React.FC<Props> = ({ open, toggleDrawer, children, mainDrawer = false, variant = 'persistent' }) => {
   const handleClose = () => {
     toggleDrawer()
   }
 
   return (
-    <Drawer open={open} variant='persistent' elevation={0} PaperProps={{ style: { backgroundColor: '#414141' } }}>
+    <Drawer open={open} variant={variant} elevation={0} PaperProps={{ style: { top: mainDrawer ? '0px' : '88px', backgroundColor: '#414141' } }}>
       <Stack spacing={2} direction={'column'} sx={{ marginTop: '1em' }}>
-        <Button onClick={handleClose}>
-          <ChevronLeft sx={{ color: '#fff' }} />
-        </Button>
-        <Button onClick={() => navigate('/')}>
-          <ColorLens sx={{ color: '#fff' }} />
-        </Button>
-        <Button title='Design' onClick={() => navigate('/design')}>
-          <BorderStyleIcon sx={{ color: '#fff' }} />
-        </Button>
+        {mainDrawer && (
+          <Button onClick={handleClose}>
+            <ChevronLeft sx={{ color: '#fff' }} />
+          </Button>
+        )}
+        {children}
       </Stack>
     </Drawer>
   )
