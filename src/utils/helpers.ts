@@ -84,6 +84,7 @@ export function getColorInfo(colorString: string): ColorDetails {
 
 export const createColorObject = (color: string): SavedColor => {
   const colorObject: SavedColor = {
+    name: "",
     colorDetails: getColorInfo(color),
     created: new Date(),
     category: [],

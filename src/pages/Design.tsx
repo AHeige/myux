@@ -8,7 +8,7 @@ import Header from '../components/Header/Header'
 import DrawerSimple from '../components/Drawer/DrawerSimple'
 
 //Mui
-import { AppBar, Card, Chip, Stack } from '@mui/material'
+import { AppBar, Button, Card, Chip, Stack } from '@mui/material'
 import { Circle } from '@mui/icons-material'
 
 //Context
@@ -133,17 +133,24 @@ const Design: React.FC<Props> = ({ colors, onColorSelect }): JSX.Element => {
       <DndProvider backend={HTML5Backend}>
         <ColorProvider>
           <>
-            <DrawerSimple variant='persistent' mainDrawer={false} open={openDrawer} children={<DrawerComponent colors={colors} />} toggleDrawer={toggleDrawer} />
+            <DrawerSimple
+              variant='persistent'
+              mainDrawer={false}
+              open={openDrawer}
+              children={<DrawerComponent colors={colors} />}
+              toggleDrawer={toggleDrawer}
+            />
             {/* Design card with drop targets */}
             <div style={{ display: 'grid', marginTop: '10em', justifyContent: 'flex-start', flexDirection: 'row', position: 'relative' }}>
               {/* Nav */}
               <div style={{ position: 'absolute' }}>
-                <DropTarget type='Nav' child={navBar()} />
+                <DropTarget background='var(--main-nav-color)' type='Nav' child={navBar()} />
               </div>
 
               {/* Background */}
               <DropTarget
                 type='background'
+                background='var(--main-bg-color)'
                 child={
                   <Card elevation={5} sx={{ borderRadius: '0.5em', background: 'transparent', padding: '25em' }}>
                     Background
@@ -154,7 +161,7 @@ const Design: React.FC<Props> = ({ colors, onColorSelect }): JSX.Element => {
               {/* Card */}
               <div style={{ position: 'absolute', width: '45%', alignSelf: 'center', justifySelf: 'center' }}>
                 <DropTarget
-                  background='color-mix(in srgb, var(--main-accent-color) 90%, white)'
+                  background='var(--main-accent-color)'
                   type='card'
                   child={
                     <Card elevation={5} sx={{ borderRadius: '0.5em', background: 'transparent', padding: '2em' }}>

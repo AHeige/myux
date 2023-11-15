@@ -1,4 +1,5 @@
 export interface SavedColor {
+  name: string
   colorDetails: ColorDetails
   created: Date
   category: Category[]

@@ -75,7 +75,7 @@ const AddColor: React.FC<Props> = ({ onColorSelect, inputLabel = '#color' }) => 
               label={inputLabel}
             />
             <Button disabled={!isValidColor(newColor)} color={'success'} variant='contained' onClick={() => handleAddColor()}>
-              Add Color
+              <span style={{ color: isValidColor(newColor) ? '#fff' : '#aa9090' }}>Add Color</span>
             </Button>
           </Stack>
         </form>

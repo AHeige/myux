@@ -1,7 +1,9 @@
 :root {
-  --main-bg-color: #202020;
-  --main-accent-color: color-mix(in srgb, var(--main-bg-color) 85%, white);
+  --main-bg-color: #252423;
+  --main-accent-color: #323130;
   --main-font-color: #fff;
+  --main-nav-color: #201f1e;
+
 }
 
 body {
