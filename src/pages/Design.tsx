@@ -8,7 +8,7 @@ import Header from '../components/Header/Header'
 import DrawerSimple from '../components/Drawer/DrawerSimple'
 
 //Mui
-import { AppBar, Button, Card, Chip, Stack } from '@mui/material'
+import { AppBar, Card, Chip, Stack } from '@mui/material'
 import { Circle } from '@mui/icons-material'
 
 //Context
