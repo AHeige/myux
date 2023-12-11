@@ -26,11 +26,30 @@ const App: React.FC = () => {
     localStorage.setItem('colors', JSON.stringify(colors))
   }
 
+  const startingColors = () => {
+    const cs: SavedColor[] = []
+
+    const startingColors = ['#90aa90']
+
+    for (let i = 0; i < startingColors.length; i++) {
+      const c = createColorObject(startingColors[i])
+
+      cs.push(c)
+    }
+    setColors([...colors, ...cs])
+    localStorage.setItem('colors', JSON.stringify(colors))
+  }
+
   useEffect(() => {
     const localStore = localStorage.getItem('colors')
+    console.log('ok')
 
     if (localStore) {
       const data = JSON.parse(localStore)
+
+      if (data.length === 0) {
+        startingColors()
+      }
 
       //If old data is stored as string[] -- before SavedColor[] was implemented.
       if (data.length > 0 && !data[0].colorDetails) {

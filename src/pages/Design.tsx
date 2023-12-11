@@ -8,7 +8,7 @@ import Header from '../components/Header/Header'
 import DrawerSimple from '../components/Drawer/DrawerSimple'
 
 //Mui
-import { AppBar, Card, Chip, Stack } from '@mui/material'
+import { AppBar, Card, Chip, Stack, Tooltip } from '@mui/material'
 import { Circle } from '@mui/icons-material'
 
 //Context
@@ -110,8 +110,8 @@ const navBar = () => {
   return (
     <AppBar position='relative'>
       <Stack direction={'row'} style={{ width: '100%', display: 'flex', flexWrap: 'wrap' }}>
-        {['Home', 'Profile', 'Settings', 'About'].map((c) => {
-          return <Chip sx={{ padding: padding, background: 'transparent', color: '#fff' }} label={c} />
+        {['Home', 'Profile', 'Settings', 'About'].map((c, i) => {
+          return <Chip key={i} sx={{ padding: padding, background: 'transparent', color: '#fff' }} label={c} />
         })}
       </Stack>
     </AppBar>
@@ -119,7 +119,12 @@ const navBar = () => {
 }
 
 const Design: React.FC<Props> = ({ colors, onColorSelect }): JSX.Element => {
+  const toolTipPlaceHolder = 'Drag a color here to use it!'
+
   const [openDrawer, setOpenDrawer] = useState<boolean>(true)
+  const [bgColor, setBgColor] = useState<string>(toolTipPlaceHolder)
+  const [navColor, setNavColor] = useState<string>(toolTipPlaceHolder)
+  const [cardColor, setCardColor] = useState<string>(toolTipPlaceHolder)
 
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer)
@@ -153,30 +158,45 @@ const Design: React.FC<Props> = ({ colors, onColorSelect }): JSX.Element => {
 
             {/* Nav */}
             <div style={{ position: 'absolute', zIndex: '1', borderRadius: '0.5em' }}>
-              <DropTarget background='var(--main-nav-color)' type='Nav' child={navBar()} />
+              <DropTarget
+                callbackColor={(c) => setNavColor(c)}
+                background='var(--main-nav-color)'
+                type='Nav'
+                child={
+                  <Tooltip placement='top-start' arrow title={navColor}>
+                    {navBar()}
+                  </Tooltip>
+                }
+              />
             </div>
 
             {/* Background */}
             <DropTarget
+              callbackColor={(c) => setBgColor(c)}
               type='background'
               background='var(--main-bg-color)'
               child={
-                <Card elevation={5} sx={{ position: 'absolute', width: '100%', height: '100%', background: 'transparent' }}>
-                  {/* Background */}
-                </Card>
+                <Tooltip placement='bottom-start' arrow title={bgColor}>
+                  <Card elevation={5} sx={{ position: 'absolute', width: '100%', height: '100%', background: 'transparent' }}>
+                    {/* Background */}
+                  </Card>
+                </Tooltip>
               }
             />
 
             {/* Card */}
             <div style={{ position: 'absolute', minWidth: '160px', width: '45%', alignSelf: 'center', justifySelf: 'center' }}>
               <DropTarget
+                callbackColor={(c) => setCardColor(c)}
                 background='var(--main-accent-color)'
                 type='card'
                 child={
-                  <Card elevation={5} sx={{ borderRadius: '0.5em', background: 'transparent', padding: '2em' }}>
-                    <h2>Card</h2>
-                    <p>With some fancy text!</p>
-                  </Card>
+                  <Tooltip placement='top-start' arrow title={cardColor}>
+                    <Card elevation={5} sx={{ borderRadius: '0.5em', background: 'transparent', padding: '2em' }}>
+                      <h2>Card</h2>
+                      <p>With some fancy text!</p>
+                    </Card>
+                  </Tooltip>
                 }
               />
             </div>
