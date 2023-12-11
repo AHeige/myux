@@ -95,6 +95,7 @@ const DropTarget: React.FC<DropTargetProps> = ({ type, child, callbackColor, bac
     const styles = {
       background: chosenColor,
       color: 'var(--main-font-color)',
+      borderRadius: '0.5em',
     }
 
     return <>{React.cloneElement(child, { style: { ...child.props.style, ...styles }, ref: drop })}</>
@@ -125,57 +126,64 @@ const Design: React.FC<Props> = ({ colors, onColorSelect }): JSX.Element => {
   }
 
   return (
-    <div>
+    <>
       <Header>
         <AddColor onColorSelect={(c) => onColorSelect(c)} />
       </Header>
 
       <DndProvider backend={HTML5Backend}>
+        <DrawerSimple variant='persistent' mainDrawer={false} open={openDrawer} children={<DrawerComponent colors={colors} />} toggleDrawer={toggleDrawer} />
         <ColorProvider>
-          <>
-            <DrawerSimple
-              variant='persistent'
-              mainDrawer={false}
-              open={openDrawer}
-              children={<DrawerComponent colors={colors} />}
-              toggleDrawer={toggleDrawer}
-            />
+          <div
+            className='wrapper'
+            style={{
+              maxWidth: '1200px',
+              width: '80%',
+              marginLeft: '163px',
+              height: '60vh',
+              display: 'grid',
+              marginTop: '10em',
+              justifyContent: 'flex-start',
+              borderRadius: '0.5em',
+              flexDirection: 'row',
+              position: 'relative',
+            }}
+          >
             {/* Design card with drop targets */}
-            <div style={{ display: 'grid', marginTop: '10em', justifyContent: 'flex-start', flexDirection: 'row', position: 'relative' }}>
-              {/* Nav */}
-              <div style={{ position: 'absolute' }}>
-                <DropTarget background='var(--main-nav-color)' type='Nav' child={navBar()} />
-              </div>
 
-              {/* Background */}
+            {/* Nav */}
+            <div style={{ position: 'absolute', zIndex: '1', borderRadius: '0.5em' }}>
+              <DropTarget background='var(--main-nav-color)' type='Nav' child={navBar()} />
+            </div>
+
+            {/* Background */}
+            <DropTarget
+              type='background'
+              background='var(--main-bg-color)'
+              child={
+                <Card elevation={5} sx={{ position: 'absolute', width: '100%', height: '100%', background: 'transparent' }}>
+                  {/* Background */}
+                </Card>
+              }
+            />
+
+            {/* Card */}
+            <div style={{ position: 'absolute', minWidth: '160px', width: '45%', alignSelf: 'center', justifySelf: 'center' }}>
               <DropTarget
-                type='background'
-                background='var(--main-bg-color)'
+                background='var(--main-accent-color)'
+                type='card'
                 child={
-                  <Card elevation={5} sx={{ borderRadius: '0.5em', background: 'transparent', padding: '25em' }}>
-                    Background
+                  <Card elevation={5} sx={{ borderRadius: '0.5em', background: 'transparent', padding: '2em' }}>
+                    <h2>Card</h2>
+                    <p>With some fancy text!</p>
                   </Card>
                 }
               />
-
-              {/* Card */}
-              <div style={{ position: 'absolute', width: '45%', alignSelf: 'center', justifySelf: 'center' }}>
-                <DropTarget
-                  background='var(--main-accent-color)'
-                  type='card'
-                  child={
-                    <Card elevation={5} sx={{ borderRadius: '0.5em', background: 'transparent', padding: '2em' }}>
-                      <h2>Card</h2>
-                      <p>With some fancy text!</p>
-                    </Card>
-                  }
-                />
-              </div>
             </div>
-          </>
+          </div>
         </ColorProvider>
       </DndProvider>
-    </div>
+    </>
   )
 }
 
